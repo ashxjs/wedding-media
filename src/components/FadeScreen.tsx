@@ -32,10 +32,13 @@ export const FadeScreen: FunctionComponent<FadeScreenProps> = ({
     <section className="w-full h-screen sticky top-0 overflow-hidden mb-[100vh]">
       <main className={cx("w-full h-screen relative")}>
         <Image
-          src={bgImagePath}
+          priority
           alt="logo"
-          height={height}
+          quality={100}
+          fetchPriority="high"
           width={width}
+          height={height}
+          src={bgImagePath}
           className="object-cover w-full h-full"
         />
         <motion.div
