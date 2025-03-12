@@ -10,7 +10,12 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: ONE_MONTH,
     remotePatterns: [
       {
-        hostname: "*.supabase.co",
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+      },
+      {
+        protocol: "https",
+        hostname: "iwxadmbvwmdcvdmfveri.supabase.co",
       },
     ],
   },

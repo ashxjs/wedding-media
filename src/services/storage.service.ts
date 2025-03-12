@@ -1,25 +1,34 @@
-import { createClient } from "@/utils/server";
-
-enum StorageBucket {
-  IMAGES = "images",
-}
+"use server";
+import { googleCloudConfig } from "../../lib/config";
+import { Storage } from "@google-cloud/storage";
 
 const ONE_MONTH = 60 * 60 * 24 * 30;
 
-export const GetAllImages = async () => {
-  const supabase = await createClient();
-  const { data: files, error } = await supabase.storage
-    .from(StorageBucket.IMAGES)
-    .list();
+export const GetBucketFiles = async (path: string) => {
+  const storage = new Storage({
+    projectId: googleCloudConfig.projectId,
+    keyFilename: googleCloudConfig.keyFilename,
+  });
 
-  if (error || !files) return null;
+  const [files] = await storage
+    .bucket(googleCloudConfig.bucketName)
+    .getFiles({ prefix: path });
 
-  const { data: urls } = await supabase.storage
-    .from(StorageBucket.IMAGES)
-    .createSignedUrls(
-      files.map((file) => file.name),
-      ONE_MONTH
-    );
+  const imageFiles = files.filter((file) =>
+    file.metadata?.contentType?.includes("image")
+  );
 
-  return urls?.map((url) => url.signedUrl);
+  const signedUrls = await Promise.all(
+    imageFiles.map(async (file) => {
+      const [signedUrl] = await file.getSignedUrl({
+        version: "v4",
+        action: "read",
+        expires: Date.now() + ONE_MONTH, // 30 days
+      });
+
+      return signedUrl;
+    })
+  );
+
+  return signedUrls;
 };
