@@ -3,13 +3,12 @@ import { googleCloudConfig } from "../../lib/config";
 import { Storage } from "@google-cloud/storage";
 
 const ONE_MONTH = 60 * 60 * 24 * 30;
+const storage = new Storage({
+  projectId: googleCloudConfig.projectId,
+  keyFilename: googleCloudConfig.keyFilename,
+});
 
 export const GetBucketFiles = async (path: string) => {
-  const storage = new Storage({
-    projectId: googleCloudConfig.projectId,
-    keyFilename: googleCloudConfig.keyFilename,
-  });
-
   const [files] = await storage
     .bucket(googleCloudConfig.bucketName)
     .getFiles({ prefix: path });
@@ -31,4 +30,17 @@ export const GetBucketFiles = async (path: string) => {
   );
 
   return signedUrls;
+};
+
+export const GetVideoUrl = async (file: string) => {
+  const [signedUrl] = await storage
+    .bucket(googleCloudConfig.bucketName)
+    .file(file)
+    .getSignedUrl({
+      version: "v4",
+      action: "read",
+      expires: Date.now() + ONE_MONTH,
+    });
+
+  return signedUrl;
 };

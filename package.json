@@ -10,13 +10,13 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^7.15.2",
-    "@supabase/ssr": "^0.5.2",
-    "@supabase/supabase-js": "^2.49.1",
     "classnames": "^2.5.1",
     "framer-motion": "^12.4.10",
     "next": "15.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-player": "^2.16.0",
+    "shaka-player": "^4.14.0",
     "sharp": "^0.33.5"
   },
   "devDependencies": {

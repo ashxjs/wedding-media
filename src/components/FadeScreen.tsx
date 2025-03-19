@@ -45,7 +45,7 @@ export const FadeScreen: FunctionComponent<FadeScreenProps> = ({
           className="scroll-fade-in absolute top-0 left-0 w-full h-full bg-black flex items-center justify-center"
           style={{ opacity }}
         >
-          <h1 className="font-playwrite text-white text-center text-8xl font-bold leading-[10rem]">
+          <h1 className="font-playwrite text-white text-center text-5xl font-bold leading-[10rem]">
             Léana & Alexis
           </h1>
         </motion.div>
